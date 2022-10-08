@@ -1,21 +1,4 @@
-///////////////////////////////////////////////////////////////////////
-// Student name: Ezekiel Cochran
-// Course: COSC 3523 Section 01 - Analysis of Algorithms
-// Assignment: #02 - Wordsnakes
-// Filename: cochran02.java
-//
-// Purpose: Find the optimal wordsnake given a list of words
-//
-// Assumptions: None known
-//
-// Limitations: Requires input to start with an integer corresponding to the number of words in the input list
-// 
-// Development Computer: 2020 MacBook Pro
-// Operating System: macOS Monterey 12.0.1
-// Compiler:  java
-// Integrated Development Environment (IDE): Visual Studio Code
-// Operational Status: Functional but not elegant
-///////////////////////////////////////////////////////////////////////
+// The goal for this branch is to make the recursive funciton much more elegant, including but not limited to removing the "reward" paramater
 
 import java.util.ArrayList;
 import java.util.Arrays;

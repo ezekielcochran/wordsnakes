@@ -1,3 +1,4 @@
+// Branch: rewardless
 // The goal for this branch is to make the recursive funciton much more elegant, including but not limited to removing the "reward" paramater
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class cochran02 {
         ScoreAndPath finalResult = new ScoreAndPath();
         
         for (int i = 0; i < connections.length; i++) {
-            thisResult = recursive_score(i, 0, initial_previously_visited);
+            thisResult = recursive_score(i, initial_previously_visited);
             if (thisResult.score > max_score) {
                 finalResult = thisResult;
                 finalResult.path.add(i);
@@ -50,36 +51,31 @@ public class cochran02 {
         }
         return finalResult;
     }
-    
-    private static ScoreAndPath recursive_score(int starting_point, int reward, ArrayList<Integer> previously_visited) {
+
+    private static ScoreAndPath recursive_score(int starting_point, ArrayList<Integer> previously_visited) {
         int[] exits = connections[starting_point];
-        int max_exit_score = 0;
         ScoreAndPath best = new ScoreAndPath();
-        best.path = new ArrayList<Integer>(); 
         for (int i = 0; i < exits.length; i++) {
-            int exit_reward = exits[i];
-            if (exit_reward >= MINIMUM_OVERLAP * MINIMUM_OVERLAP && !previously_visited.contains(i)) { //CHANGE THIS TO A CONSTANT VARIABLE LATER, FIGURE OUT HOW TO USE IT GLOBALLY
-                ArrayList<Integer> visited = new ArrayList<>(previously_visited);
+            int connection_score = exits[i];
+            if (connection_score >= MINIMUM_OVERLAP * MINIMUM_OVERLAP && !previously_visited.contains(i)) {
+                ArrayList<Integer> visited = new ArrayList<Integer>(previously_visited);
                 visited.add(i);
-                ScoreAndPath this_exit = recursive_score(i, exit_reward, visited);
-                if (this_exit.score > max_exit_score) {
-                    max_exit_score = this_exit.score;
-                    // System.out.println("this_exit.path: ");
-                    // print(this_exit.path);
-                    // System.out.println();
+                ScoreAndPath this_exit = recursive_score(i, visited);
+                int this_score = connection_score + this_exit.score;
+                if (this_score > best.score) {
+                    best.score = this_score;
                     this_exit.path.add(i);
                     best.path = this_exit.path;
-                    // best.path = new ArrayList<Integer>(visited);
                 }
             }
         }
-        int score = reward + max_exit_score;
-        best.score = score;
+
+
         return best;
     }
 
     private static void printSolution(ArrayList<Integer> indexes, String[] words) {
-        if (indexes == null) {
+        if (indexes == null || indexes.size() == 0) { //Added second part of condition, didn't use to be necessary
             System.out.println("\n\nNo Wordsnakes Exist.\n");
         } else {
             System.out.print("\n\nBest Wordsnake:\n\n");
@@ -141,31 +137,9 @@ public class cochran02 {
             string_list[i] = string_list[i].toLowerCase();
         }
     }
-
-    private static void printMatrix(int[][] array, boolean hide_zeroes) {
-        for (int i = 0; i < array.length; i++) {
-            System.out.println();
-            for (int j = 0; j < array[i].length; j++) {
-                int num = array[i][j];
-                if (num == 0 && hide_zeroes) {
-                    System.out.print("-  ");
-                } else {
-                    System.out.printf("%-2d ", num);
-                }
-            }
-        }
-        System.out.println("\n");
-    } 
-
-    private static void print(ArrayList a) {
-        for (int i = 0; i < a.size(); i++) {
-            System.out.printf("%d, ", a.get(i));
-        }
-        System.out.println();
-    }
 }
 
 class ScoreAndPath {
-    int score;
-    ArrayList<Integer> path;
+    int score = 0;
+    ArrayList<Integer> path = new ArrayList<Integer>();
 }

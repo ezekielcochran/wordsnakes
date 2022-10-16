@@ -1,5 +1,21 @@
-// Branch: rewardless
-// The goal for this branch is to make the recursive funciton much more elegant, including but not limited to removing the "reward" paramater
+///////////////////////////////////////////////////////////////////////
+// Student name: Ezekiel Cochran
+// Course: COSC 3523 Section 01 - Analysis of Algorithms
+// Assignment: #02 - Wordsnakes
+// Filename: cochran02.java
+//
+// Purpose: Find the optimal wordsnake given a list of words
+//
+// Assumptions: None known
+//
+// Limitations: Requires input to start with an integer corresponding to the number of words in the input list
+// 
+// Development Computer: 2020 MacBook Pro
+// Operating System: macOS Monterey 12.0.1
+// Compiler:  java
+// Integrated Development Environment (IDE): Visual Studio Code
+// Operational Status: Functional, a little more elegant
+///////////////////////////////////////////////////////////////////////
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,17 +25,13 @@ public class cochran02 {
     final static int MINIMUM_OVERLAP = 2;
     static int[][] connections;
     public static void main(String[] args) {
-        // String[] words = {"Alas", "Blend", "Eloped", "Eternal", "Gerund", "Merger", "Pediatric", "Penultimate", "Stinger", "Sudden", "Trice", "Underdeveloped", "yes"};
-        // String[] words = {"Apple", "cap", "lemur", "Problem"};
         String[] words = inputWords();
         arrayToLowerCase(words);
         Arrays.sort(words);
         connections = buildConnectionArray(words);
-        // printMatrix(connections, true);
-        ScoreAndPath hail_mary = driver();
-        printSolution(hail_mary.path, words);
-        System.out.printf("Score: %d\n", hail_mary.score);
-        
+        ScoreAndPath solution = driver();
+        printSolution(solution.path, words);
+        System.out.printf("Score: %d\n", solution.score);
     }
 
     private static String[] inputWords() {
@@ -40,7 +52,6 @@ public class cochran02 {
         ArrayList<Integer> initial_previously_visited = new ArrayList<Integer>();
         ScoreAndPath thisResult = new ScoreAndPath();
         ScoreAndPath finalResult = new ScoreAndPath();
-        
         for (int i = 0; i < connections.length; i++) {
             thisResult = recursive_score(i, initial_previously_visited);
             if (thisResult.score > max_score) {
@@ -69,8 +80,6 @@ public class cochran02 {
                 }
             }
         }
-
-
         return best;
     }
 
@@ -102,16 +111,13 @@ public class cochran02 {
         if (first_word.equals(second_word)) {
             return 0;
         }
-
         char[] first_chars = first_word.toCharArray();
         char[] second_chars = second_word.toCharArray();
-
         for (int i = 0; i < first_chars.length; i++) {
             if (test_equality(first_chars, second_chars, i)) {
                 return first_chars.length - i;
             }
         }
-
         return 0;
     }
 
